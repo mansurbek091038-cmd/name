@@ -273,3 +273,4 @@ So'ng sayt `http://localhost:8000`, admin panel `http://localhost:8000/admin` da
 `src/i18n/dict.ts` — interfeys yozuvlari (uz/ru/en), `src/three` — three.js globus, `src/styles` — dizayn tokenlari va CSS.
 Barcha kontent API dan `?lang=` bilan olinadi; til URL'da `?lang=ru|en` ko'rinishida saqlanadi.
 "# name" 
+# name
