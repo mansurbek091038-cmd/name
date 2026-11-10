@@ -29,6 +29,7 @@ services:
       APP_ENV: ${APP_ENV:-development}
       SITE_URL: ${SITE_URL:-http://localhost:8000}
       TRUST_PROXY: "true"
+      PORT: "8000"
     ports:
       - "${PORT:-8000}:8000"
     volumes:

@@ -132,6 +132,11 @@ def create_app() -> FastAPI:
 
     api.add_api_route("/health", health, methods=["HEAD"], include_in_schema=False)
 
+    @app.get("/health", tags=["system"], summary="Holat tekshiruvi (monitoring)", include_in_schema=False)
+    @app.head("/health", include_in_schema=False)
+    def root_health():
+        return health()
+
     for r in (
         auth.router, auth.users_router,
         content_public.router, admissions.public_router, events.public_router,

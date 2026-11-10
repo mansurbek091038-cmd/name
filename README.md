@@ -272,5 +272,3 @@ So'ng sayt `http://localhost:8000`, admin panel `http://localhost:8000/admin` da
 `src/admin` — admin panel (alohida yuklanadi), `src/lib` — API mijozi, i18n, yordamchilar,
 `src/i18n/dict.ts` — interfeys yozuvlari (uz/ru/en), `src/three` — three.js globus, `src/styles` — dizayn tokenlari va CSS.
 Barcha kontent API dan `?lang=` bilan olinadi; til URL'da `?lang=ru|en` ko'rinishida saqlanadi.
-"# name" 
-# name
