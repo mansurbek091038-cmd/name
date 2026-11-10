@@ -422,6 +422,8 @@ def seed_admissions(db: Session, users: dict[str, User], rng: random.Random) -> 
 
 
 def run_seed(reset: bool = False) -> None:
+    if get_settings().is_production:
+        raise RuntimeError("Demo seed is disabled in production.")
     init_db()
     if reset:
         log.warning("Resetting database and media…")

@@ -46,13 +46,6 @@ limiter = RateLimiter()
 
 
 def client_ip(request: Request) -> str:
-    if get_settings().trust_proxy:
-        fwd = request.headers.get("x-forwarded-for")
-        if fwd:
-            return fwd.split(",")[0].strip()
-        real = request.headers.get("x-real-ip")
-        if real:
-            return real.strip()
     return request.client.host if request.client else "unknown"
 
 

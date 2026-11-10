@@ -1,45 +1,15 @@
-# Version Control
-.git
-.gitignore
-.github
-
-# Virtual Environments & Python Cache
 .venv
-venv
-**/__pycache__
-**/.pytest_cache
-**/.ruff_cache
-*.pyc
-*.pyo
-*.pyd
-
-# Environment & Local Secrets
-.env
-.env.*
-*.secret_key
-
-# Local Data, Media, & Backups
+**/.env
+**/.env.*
 data
 media
 backups
-
-# Node & Frontend
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
 frontend/node_modules
 frontend/dist
 backend/app/static
-
-# Logs & Archives
 *.log
+.git
 *.zip
-*.tar.gz
-*.rar
-
-# IDE & Editor configs
-.vscode
-.idea
-.DS_Store
-Thumbs.db
-
-# Local convenience scripts
-run.bat
-run.sh

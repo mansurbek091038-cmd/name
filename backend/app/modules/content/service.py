@@ -323,8 +323,13 @@ def certificate_public(db: Session, c: Certificate, lang: str = "uz", mm: dict |
 
 def certificate_admin(db: Session, c: Certificate) -> dict:
     out = certificate_public(db, c)
+    image = admin_media(db, c.image_id)
+    if image and not c.parent_consent and not image["is_private"]:
+        endpoint = f"/api/v1/admin/media/{c.image_id}/file"
+        for field, size in (("url", "full"), ("thumb", "thumb"), ("medium", "medium"), ("large", "large")):
+            image[field] = f"{endpoint}?size={size}"
     out.update({
-        "image": admin_media(db, c.image_id),
+        "image": image,
         "image_id": c.image_id,
         "original_image_id": c.original_image_id,
         "original_image": admin_media(db, c.original_image_id),

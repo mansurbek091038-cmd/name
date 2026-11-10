@@ -44,4 +44,4 @@ echo "  API hujjati (Swagger):        http://localhost:${PORT}/api/docs"
 echo "  To'xtatish: Ctrl+C"
 echo "=============================================================="
 cd backend
-exec python -m uvicorn app.main:app --host "$HOST" --port "$PORT" --proxy-headers
+HOST="$HOST" PORT="$PORT" exec python -m app.serve

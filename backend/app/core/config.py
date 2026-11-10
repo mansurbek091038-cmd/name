@@ -5,6 +5,7 @@ import logging
 import secrets
 from functools import lru_cache
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -37,7 +38,7 @@ class Settings(BaseSettings):
     database_url: str = ""
     data_dir: Path = PROJECT_DIR / "data"
     media_root: Path = PROJECT_DIR / "media"
-    backup_dir: Path = PROJECT_DIR / "data" / "backups"
+    backup_dir: Path | None = None
     backup_keep: int = 30
     max_upload_mb: int = 15
 
@@ -45,7 +46,7 @@ class Settings(BaseSettings):
     auto_seed: bool = True
 
     # --- security ---
-    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+    cors_origins: str | None = None
     cookie_secure: bool | None = None  # None -> True in production
     trust_proxy: bool = False
     access_token_minutes: int = 15
@@ -76,7 +77,9 @@ class Settings(BaseSettings):
 
     @field_validator("data_dir", "media_root", "backup_dir")
     @classmethod
-    def _abs_path(cls, v: Path) -> Path:
+    def _abs_path(cls, v: Path | None) -> Path | None:
+        if v is None:
+            return None
         v = Path(v).expanduser()
         return v if v.is_absolute() else (PROJECT_DIR / v).resolve()
 
@@ -102,7 +105,10 @@ class Settings(BaseSettings):
 
     @property
     def cors_origin_list(self) -> list[str]:
-        return [o.strip().rstrip("/") for o in self.cors_origins.split(",") if o.strip()]
+        origins = self.cors_origins
+        if origins is None:
+            return [] if self.is_production else ["http://localhost:5173", "http://127.0.0.1:5173"]
+        return [o.strip().rstrip("/") for o in origins.split(",") if o.strip()]
 
     @property
     def sqlalchemy_url(self) -> str:
@@ -135,8 +141,9 @@ class Settings(BaseSettings):
 
 def _resolve_secret(s: Settings) -> None:
     """Use SECRET_KEY from env; otherwise create one and keep it in data/.secret_key."""
-    if s.secret_key and len(s.secret_key) >= 16:
-        return
+    if s.secret_key:
+        if len(s.secret_key) >= 16:
+            return
     key_file = s.data_dir / ".secret_key"
     if key_file.exists():
         s.secret_key = key_file.read_text().strip()
@@ -154,6 +161,16 @@ def _resolve_secret(s: Settings) -> None:
 @lru_cache
 def get_settings() -> Settings:
     s = Settings()
+    if s.is_production:
+        site = urlsplit(s.site_url)
+        if site.scheme != "https" or not site.hostname or site.path or site.query or site.fragment or site.username:
+            raise ValueError("Production SITE_URL must be the HTTPS origin of the site.")
+        if len(s.secret_key.encode()) < 32:
+            raise ValueError("Production SECRET_KEY must be at least 32 bytes.")
+        if not s.secure_cookies:
+            raise ValueError("Production requires secure cookies.")
+    if s.backup_dir is None:
+        s.backup_dir = s.data_dir / "backups"
     s.ensure_dirs()
     _resolve_secret(s)
     return s

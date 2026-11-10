@@ -19,7 +19,8 @@ import sys
 import tarfile
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import unquote, urlparse
+from psycopg.conninfo import conninfo_to_dict, make_conninfo
+from sqlalchemy.engine import make_url
 
 from app.core.config import BACKEND_DIR, get_settings
 
@@ -134,11 +135,15 @@ def cmd_backup(args) -> int:
             shutil.copyfileobj(fi, fo)
         tmp.unlink()
     else:
-        p = urlparse(url.replace("postgresql+psycopg", "postgresql"))
-        env = dict(os.environ, PGPASSWORD=unquote(p.password or ""))
+        pg_url = make_url(url).set(drivername="postgresql")
+        # Keep the password out of argv and preserve provider options such as sslmode.
+        params = conninfo_to_dict(pg_url.render_as_string(hide_password=False))
+        env = os.environ.copy()
+        password = params.pop("password", None)
+        if password is not None:
+            env["PGPASSWORD"] = password
         target = out_dir / f"smartstart-db-{stamp}.sql.gz"
-        cmd = ["pg_dump", "-h", p.hostname or "localhost", "-p", str(p.port or 5432), "-U", unquote(p.username or ""),
-               "--no-owner", "--no-privileges", (p.path or "/").lstrip("/")]
+        cmd = ["pg_dump", "--no-owner", "--no-privileges", "--dbname", make_conninfo(**params)]
         try:
             proc = subprocess.run(cmd, env=env, capture_output=True, check=True)
         except FileNotFoundError:

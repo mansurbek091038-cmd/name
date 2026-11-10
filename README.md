@@ -16,6 +16,8 @@ Hammasi **bitta buyruq bilan** ishga tushadi.
 
 ## 1. Ishga tushirish
 
+Hosting uchun [DEPLOYMENT.md](DEPLOYMENT.md) faylidagi sozlamalardan foydalaning.
+
 ### Windows
 1. Python 3.10 yoki yangisini o'rnating: <https://www.python.org/downloads/> — o'rnatishda **«Add python.exe to PATH»** belgisini qo'ying.
 2. Loyiha papkasidagi **`run.bat`** faylini ikki marta bosing.
@@ -29,35 +31,19 @@ cd smart-start
 Brauzerda: **<http://localhost:8000>**. Boshqa port kerak bo'lsa: `PORT=9000 ./run.sh`.
 
 `run.sh` / `run.bat` o'zi: virtual muhit (`.venv`) yaratadi, kutubxonalarni o'rnatadi, `.env` faylini yaratadi
-va serverni **8000-portda** ishga tushiradi. Ma'lumotlar bazasi (SQLite, `data/smartstart.db`) birinchi
-ishga tushishda **o'zi yaratiladi va demo ma'lumotlar bilan to'ldiriladi**.
+va serverni **8000-portda** ishga tushiradi. Arxivdagi `data/smartstart.db` va `media/` birga ishlatiladi.
 
-### Docker (server uchun tavsiya etiladi)
-```bash
-cp .env.example .env        # kerak bo'lsa tahrirlang (POSTGRES_PASSWORD, SITE_URL…)
-docker compose up -d --build
+## 2. Xodimlar uchun kirish
+
+Admin panel: <http://localhost:8000/admin>. Arxivdagi hisoblar o‘chirilgan.
+`backend/` papkasida virtual muhit orqali yangi parol o‘rnating:
+
+```sh
+python -m app.cli create-user --email admin@smartstart.uz --role super_admin --update
 ```
-Bu uchta xizmatni ishga tushiradi:
 
-| Xizmat | Vazifasi |
-| --- | --- |
-| `app` | sayt + API (port 8000), frontend ham shu yerda yig'iladi |
-| `db` | PostgreSQL 15 ma'lumotlar bazasi |
-| `backup` | har kecha **02:00** da baza va rasmlarning zaxira nusxasi → `./backups/` (bazadan oxirgi 30 ta, rasmlardan oxirgi 7 ta) |
-
----
-
-## 2. Demo kirish ma'lumotlari
-
-Admin panel: **<http://localhost:8000/admin>**
-
-| Rol | Email | Parol |
-| --- | --- | --- |
-| Super admin | `admin@smartstart.uz` | `SmartStart2026!` |
-| Menejer | `manager@smartstart.uz` | `Manager2026!` |
-
-> ⚠️ Saytni internetga chiqarishdan oldin bu parollarni **albatta o'zgartiring** (admin panel → profil,
-> yoki `python -m app.cli create-user --email admin@smartstart.uz --role super_admin --update`).
+Demo bazani alohida sinov muhitida yaratish uchun `APP_ENV=development` va
+`AUTO_SEED=true` ni bo‘sh bazaga qo‘llang. Demo hisoblari haqiqiy sayt uchun ishlatilmaydi.
 
 **Rollar:**
 - **Menejer** — arizalar, ekskursiyalar, kontent (yangiliklar, o'qituvchilar, narxlar, FAQ, sertifikatlar, rasmlar).
@@ -113,7 +99,7 @@ Barcha manzillar `/api/v1` bilan boshlanadi. Xatolar doim bir xil ko'rinishda: `
 
 Bundan tashqari: `/sitemap.xml`, `/robots.txt`, `/api/v1/health` (monitoring uchun).
 
-To'liq kelishuv (frontend bilan) — `../API_CONTRACT.md`.
+API sxemasi — `/api/openapi.json`.
 
 ---
 
@@ -124,7 +110,7 @@ smart-start/
 ├── run.sh / run.bat          ← bitta buyruq bilan ishga tushirish
 ├── requirements.txt          ← Python kutubxonalari
 ├── .env.example              ← sozlamalar namunasi (izohlar o'zbekcha)
-├── Dockerfile, docker-compose.yml, deploy/backup.sh
+├── Dockerfile, docker-compose.yml, DEPLOYMENT.md
 ├── backend/
 │   ├── app/
 │   │   ├── main.py           ← dastur kirish nuqtasi
@@ -148,9 +134,9 @@ smart-start/
 
 ## 7. Frontendni qayta yig'ish
 
-Sayt ko'rinishi o'zgartirilgandan keyin (Node.js 20+ kerak):
+Sayt ko'rinishi o'zgartirilgandan keyin (Node.js 24 kerak):
 ```bash
-cd frontend && npm install && npm run build
+cd frontend && npm ci && npm run build
 ```
 Natija `backend/app/static/` papkasiga yoziladi va server uni darhol ko'rsatadi (qayta ishga tushirish shart emas).
 Frontend hali yig'ilmagan bo'lsa, `http://localhost:8000` da Swagger'ga havolali vaqtinchalik sahifa chiqadi.
@@ -179,11 +165,7 @@ Server ishlab turganda ham xavfsiz.
 dastur: `C:\smart-start\.venv\Scripts\python.exe`, argument: `-m app.cli backup --with-media`,
 papka: `C:\smart-start\backend`.
 
-**Docker:** `backup` xizmati buni o'zi qiladi (`./backups/` papkasi).
-
-**Tiklash:** SQLite — `.db.gz` faylni oching (gunzip) va `data/smartstart.db` o'rniga qo'ying (server to'xtatilgan holda).
-PostgreSQL — `gunzip -c fayl.sql.gz | docker compose exec -T db psql -U smartstart smartstart`.
-Zaxira nusxalarni boshqa joyga (boshqa server yoki bulut) ham ko'chirib turing.
+Docker orqali zaxira olish va tiklash uchun [DEPLOYMENT.md](DEPLOYMENT.md) fayliga qarang.
 
 ---
 
@@ -227,48 +209,6 @@ pasport seriyasi xiralashtiriladi (`redact_regions`). Sertifikat raqami API'da h
 
 ---
 
-## 11. Internetga joylash (deploy) bo'yicha eslatmalar
+## 11. Internetga joylash
 
-- Server O'zbekiston hududida bo'lishi kerak (shaxsiy ma'lumotlar qonuni). 2 vCPU / 4 GB RAM yetarli.
-- `.env` da: `APP_ENV=production`, `SITE_URL=https://smartstart.uz`, kuchli `POSTGRES_PASSWORD`,
-  `CORS_ORIGINS=` (bo'sh — sayt va API bitta domenda bo'lgani uchun).
-- HTTPS majburiy: oldiga **Caddy** yoki **Nginx** qo'ying. Eng oddiy yo'l — Caddy:
-  ```
-  smartstart.uz {
-      reverse_proxy 127.0.0.1:8000
-  }
-  ```
-  (Caddy SSL sertifikatini o'zi oladi.) Proxy orqasida `TRUST_PROXY=true` bo'lsin — Docker'da allaqachon yoqilgan.
-- Server **bitta jarayon (worker)** bilan ishlaydi — so'rovlar cheklovi xotirada saqlanadi; maktab sayti uchun bu yetarli.
-- Demo parollarni o'zgartiring, admin uchun 2FA ni yoqing.
-- Monitoring: `https://smartstart.uz/api/v1/health` ni UptimeRobot kabi xizmatga qo'shing. Xatolar uchun
-  `SENTRY_DSN` (+ `pip install sentry-sdk`). Loglar: `data/logs/app.log`.
-- Google Search Console va Yandex Webmaster'ga `https://smartstart.uz/sitemap.xml` ni yuboring.
-
----
-
-## Frontend
-
-Sayt va admin panel: React 19 + TypeScript + Vite, `frontend/` papkasida. Batafsil: `frontend/README_FRONTEND.md`.
-
-**Ishlab chiqish (dev):** backend `:8000` da ishlab tursin, keyin:
-
-```bash
-cd frontend
-npm install
-npm run dev          # http://localhost:5173 — /api, /media, /sitemap.xml → 127.0.0.1:8000 ga proksi
-```
-
-**Yig'ish (build):**
-
-```bash
-cd frontend
-npm run build        # avval tsc --noEmit, so'ng natija backend/app/static ga yoziladi
-```
-
-So'ng sayt `http://localhost:8000`, admin panel `http://localhost:8000/admin` da ochiladi.
-
-**Tuzilma:** `src/pages` — sayt sahifalari, `src/components` — umumiy bloklar (sertifikatlar, formalar, globus),
-`src/admin` — admin panel (alohida yuklanadi), `src/lib` — API mijozi, i18n, yordamchilar,
-`src/i18n/dict.ts` — interfeys yozuvlari (uz/ru/en), `src/three` — three.js globus, `src/styles` — dizayn tokenlari va CSS.
-Barcha kontent API dan `?lang=` bilan olinadi; til URL'da `?lang=ru|en` ko'rinishida saqlanadi.
+[DEPLOYMENT.md](DEPLOYMENT.md) faylida HTTPS, muhit o‘zgaruvchilari, bazani saqlash va zaxira nusxalari bo‘yicha ko‘rsatmalar berilgan.

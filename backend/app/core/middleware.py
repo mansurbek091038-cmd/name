@@ -64,7 +64,7 @@ class SecurityHeadersMiddleware:
                     add("cache-control", "public, max-age=31536000, immutable")
                 elif path.startswith("/media/public/"):
                     add("cache-control", "public, max-age=2592000")
-                elif (path.startswith("/api/v1/public/") and not path.startswith("/api/v1/public/tours")
+                elif (path.startswith("/api/v1/public/") and not path.startswith(("/api/v1/public/tours", "/api/v1/public/certificates"))
                       and method == "GET" and message["status"] == 200):
                     add("cache-control", "public, max-age=30")
                 elif path.startswith("/api/"):

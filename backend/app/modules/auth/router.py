@@ -18,6 +18,7 @@ from app.core.security import (
     ACCESS_COOKIE,
     REFRESH_COOKIE,
     REFRESH_COOKIE_PATH,
+    check_csrf,
     create_access_token,
     create_refresh_token,
     decode_token,
@@ -101,6 +102,7 @@ def _verify_totp(user: User, secret: str | None, otp: str | None) -> bool:
 # ---------------- auth ----------------
 @router.post("/login", summary="Xodim kirishi")
 def login(body: LoginIn, request: Request, response: Response, db: Session = Depends(get_db)):
+    check_csrf(request)
     enforce(request, "login-ip", 20, 15 * 60)
     enforce(request, "login-email", 8, 15 * 60, key_extra=body.email)
     user = db.scalar(select(User).where(func.lower(User.email) == body.email))
@@ -130,6 +132,7 @@ def login(body: LoginIn, request: Request, response: Response, db: Session = Dep
 @router.post("/refresh", summary="Access tokenni yangilash (refresh cookie)")
 def refresh(request: Request, response: Response, body: RefreshIn | None = None,
             db: Session = Depends(get_db)):
+    check_csrf(request)
     enforce(request, "refresh", 60, 60)
     token = request.cookies.get(REFRESH_COOKIE) or (body.refresh_token if body else None)
     if not token:
@@ -158,6 +161,7 @@ def refresh(request: Request, response: Response, body: RefreshIn | None = None,
 
 @router.post("/logout", summary="Chiqish")
 def logout(request: Request, response: Response, db: Session = Depends(get_db)):
+    check_csrf(request)
     token = request.cookies.get(REFRESH_COOKIE)
     if token:
         try:

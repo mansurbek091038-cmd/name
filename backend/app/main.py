@@ -12,12 +12,13 @@ from logging.handlers import RotatingFileHandler
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import select, text
 
 from app import __version__
 from app.core.config import BACKEND_DIR, STATIC_DIR, get_settings
-from app.core.db import SessionLocal, init_db
+from app.core.db import SessionLocal, engine, init_db
 from app.core.errors import install_error_handlers
 from app.core.middleware import SecurityHeadersMiddleware
 
@@ -63,7 +64,7 @@ async def lifespan(_: FastAPI):
     setup_logging()
     setup_sentry()
     init_db()
-    if settings.auto_seed:
+    if settings.auto_seed and not settings.is_production:
         from app.modules.auth.models import User
 
         with SessionLocal() as db:
@@ -73,11 +74,12 @@ async def lifespan(_: FastAPI):
 
             log.info("Empty database: loading demo/seed data…")
             run_seed(reset=False)
-    if settings.is_production and settings.site_url.startswith("http://localhost"):
-        log.warning("APP_ENV=production but SITE_URL is localhost — set SITE_URL in .env")
     log.info("Smart Start backend %s ready (db: %s)", __version__,
              "sqlite" if settings.is_sqlite else "postgresql")
-    yield
+    try:
+        yield
+    finally:
+        engine.dispose()
 
 
 def create_app() -> FastAPI:
@@ -116,6 +118,7 @@ def create_app() -> FastAPI:
     from app.modules.notifications import router as notifications
     from app.modules.reports import router as reports
     from app.web import spa
+    from app.web.media import PublicMediaFiles
 
     api = APIRouter(prefix="/api/v1")
 
@@ -127,15 +130,13 @@ def create_app() -> FastAPI:
                 db.execute(text("SELECT 1"))
         except Exception:
             db_ok = False
-        return {"status": "ok" if db_ok else "degraded", "db": "ok" if db_ok else "error",
-                "version": __version__}
+        return JSONResponse(
+            {"status": "ok" if db_ok else "degraded", "db": "ok" if db_ok else "error",
+             "version": __version__},
+            status_code=200 if db_ok else 503,
+        )
 
     api.add_api_route("/health", health, methods=["HEAD"], include_in_schema=False)
-
-    @app.get("/health", tags=["system"], summary="Holat tekshiruvi (monitoring)", include_in_schema=False)
-    @app.head("/health", include_in_schema=False)
-    def root_health():
-        return health()
 
     for r in (
         auth.router, auth.users_router,
@@ -153,7 +154,7 @@ def create_app() -> FastAPI:
     app.include_router(api)
 
     settings.public_media_dir.mkdir(parents=True, exist_ok=True)
-    app.mount("/media/public", StaticFiles(directory=settings.public_media_dir), name="media")
+    app.mount("/media/public", PublicMediaFiles(directory=settings.public_media_dir), name="media")
     app.mount("/assets", StaticFiles(directory=STATIC_DIR / "assets", check_dir=False), name="assets")
     app.include_router(spa.router)  # must be last: catch-all for the SPA
     return app

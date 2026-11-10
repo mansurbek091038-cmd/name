@@ -84,6 +84,8 @@ def test_admin_certificate_private_original(admin):
     # withdrawing consent hides it immediately
     admin.put(f"/api/v1/admin/certificates/{cert['id']}", json={"parent_consent": False})
     assert admin.get(f"/api/v1/public/certificates/{cert['id']}").status_code == 404
+    for field in ("url", "thumb", "medium", "large"):
+        assert admin.get(pub["image"][field]).status_code == 404
     assert admin.delete(f"/api/v1/admin/certificates/{cert['id']}").status_code == 204
 
 

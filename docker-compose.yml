@@ -1,70 +1,14 @@
-# Smart Start: app + PostgreSQL + har kecha soat 02:00 da zaxira nusxa.
-#   docker compose up -d --build
-# Sozlamalar .env faylidan olinadi (bo'lmasa .env.example dan nusxalang).
 services:
-  db:
-    image: postgres:15-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: smartstart
-      POSTGRES_USER: smartstart
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-smartstart_parol}
-      TZ: Asia/Tashkent
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U smartstart -d smartstart"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
-
   app:
     build: .
     restart: unless-stopped
-    env_file:
-      - path: .env
-        required: false
+    env_file: .env
     environment:
-      DATABASE_URL: postgresql://smartstart:${POSTGRES_PASSWORD:-smartstart_parol}@db:5432/smartstart
-      APP_ENV: ${APP_ENV:-development}
-      SITE_URL: ${SITE_URL:-http://localhost:8000}
-      TRUST_PROXY: "true"
-      PORT: "8000"
+      PORT: "${PORT:-8000}"
+    user: "${APP_UID:-1000}:${APP_GID:-1000}"
     ports:
-      - "${PORT:-8000}:8000"
+      - "${BIND_IP:-127.0.0.1}:${HOST_PORT:-8000}:${PORT:-8000}"
     volumes:
-      - media:/app/media
-      - appdata:/app/data
-    depends_on:
-      db:
-        condition: service_healthy
-
-  backup:
-    image: postgres:15-alpine
-    restart: unless-stopped
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      PGHOST: db
-      PGUSER: smartstart
-      PGDATABASE: smartstart
-      PGPASSWORD: ${POSTGRES_PASSWORD:-smartstart_parol}
-      TZ: Asia/Tashkent
-      KEEP: "30"
-      KEEP_MEDIA: "7"
-    volumes:
-      - ./backups:/backups
-      - media:/media:ro
-      - ./deploy/backup.sh:/backup.sh:ro
-    entrypoint: ["/bin/sh", "-c"]
-    command:
-      - |
-        echo "0 2 * * * /bin/sh /backup.sh >> /proc/1/fd/1 2>&1" > /etc/crontabs/root
-        echo "Zaxira xizmati: har kuni 02:00 (Asia/Tashkent)"
-        exec crond -f -l 8
-
-volumes:
-  pgdata:
-  media:
-  appdata:
+      - ./data:/app/data
+      - ./media:/app/media
+    stop_grace_period: 40s

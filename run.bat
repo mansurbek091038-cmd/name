@@ -53,5 +53,5 @@ echo   API hujjati (Swagger):        http://localhost:%PORT%/api/docs
 echo   To'xtatish: Ctrl+C
 echo ==============================================================
 cd backend
-python -m uvicorn app.main:app --host 0.0.0.0 --port %PORT%
+python -m app.serve
 pause

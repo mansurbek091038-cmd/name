@@ -94,8 +94,6 @@ def test_security_headers(client):
     assert r.headers["x-frame-options"] == "DENY"
     assert r.headers["cache-control"].startswith("public")
     assert client.get("/api/v1/health").json()["status"] == "ok"
-    assert client.get("/health").json()["status"] == "ok"
-    assert client.head("/health").status_code == 200
 
 
 def test_cors_restricted(client):
