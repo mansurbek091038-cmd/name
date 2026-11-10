@@ -16,6 +16,7 @@ venv
 # Environment & Local Secrets
 .env
 .env.*
+!.env.example
 *.secret_key
 
 # Local Data, Media, & Backups
