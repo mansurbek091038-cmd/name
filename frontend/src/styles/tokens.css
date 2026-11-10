@@ -1,0 +1,86 @@
+/* Smart Start design tokens — taken from the approved mockup (ss.html) */
+:root {
+  /* brand (fixed) */
+  --ivory: #FBF8F1;
+  --ivory-2: #F3EDE0;
+  --ivory-3: #EBE3D2;
+  --navy: #0D1B36;
+  --navy-2: #22314F;
+  --navy-3: #2B4170;
+  --navy-soft: #1B3366;
+  --gold: #C9962B;
+  --gold-2: #E8B84A;
+  --gold-ink: #8A6212;      /* gold for small text on light bg (AA 5:1) */
+  --gold-accent: #B07F1E;   /* italic accent words in headings (AA large 3.3:1) */
+  --green: #12723F;
+  --green-bg: #E9F7EF;
+  --red: #B42318;
+  --red-bg: #FEF3F2;
+
+  /* semantic (light) */
+  --bg: var(--ivory);
+  --bg-2: var(--ivory-2);
+  --surface: #FFFFFF;
+  --surface-2: #F7F3EA;
+  --text: var(--navy);
+  --text-2: #3F4A63;
+  --muted: #5F6880;
+  --line: #E6DFCF;
+  --line-2: #D9CFB9;
+  --accent-text: var(--gold-accent);
+  --eyebrow: var(--gold-ink);
+  --deep: var(--navy);           /* navy feature surfaces */
+  --deep-text: #FFFFFF;
+  --deep-muted: #AAB4CB;
+  --deep-line: rgba(255, 255, 255, .1);
+  --field: #FFFFFF;
+  --overlay: rgba(13, 27, 54, .55);
+
+  --shadow-sm: 0 1px 2px rgba(13, 27, 54, .06), 0 0 0 1px rgba(13, 27, 54, .04);
+  --shadow-md: 0 18px 36px -18px rgba(13, 27, 54, .35), 0 0 0 1px rgba(13, 27, 54, .05);
+  --shadow-lg: 0 30px 50px -18px rgba(13, 27, 54, .45), 0 0 0 1px rgba(13, 27, 54, .05);
+  --shadow-xl: -40px 50px 80px -30px rgba(13, 27, 54, .55);
+
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-2xl: 28px;
+
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  --container: 1328px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --header-h: 78px;
+  --ease: cubic-bezier(.22, .8, .24, 1);
+  --focus: 0 0 0 3px var(--bg), 0 0 0 5px var(--gold);
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #0A1328;
+  --bg-2: #0E1A33;
+  --surface: #121F3B;
+  --surface-2: #172746;
+  --text: #F5EFE2;
+  --text-2: #CBD3E4;
+  --muted: #9CA8C1;
+  --line: rgba(232, 184, 74, .14);
+  --line-2: rgba(232, 184, 74, .24);
+  --accent-text: var(--gold-2);
+  --eyebrow: var(--gold-2);
+  --deep: #13234A;
+  --deep-line: rgba(232, 184, 74, .16);
+  --field: #0E1A33;
+  --overlay: rgba(4, 9, 20, .7);
+  --green-bg: rgba(23, 138, 76, .18);
+  --red-bg: rgba(180, 35, 24, .18);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3), 0 0 0 1px rgba(232, 184, 74, .08);
+  --shadow-md: 0 18px 36px -18px rgba(0, 0, 0, .7), 0 0 0 1px rgba(232, 184, 74, .08);
+  --shadow-lg: 0 30px 50px -18px rgba(0, 0, 0, .8), 0 0 0 1px rgba(232, 184, 74, .1);
+  --shadow-xl: -40px 50px 80px -30px rgba(0, 0, 0, .8);
+  --focus: 0 0 0 3px var(--bg), 0 0 0 5px var(--gold-2);
+  color-scheme: dark;
+}

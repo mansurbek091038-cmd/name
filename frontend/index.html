@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Smart Start — xususiy maktab, Toshkent</title>
+    <meta name="description" content="Smart Start xususiy maktabi: kuchli ingliz tili, kichik sinflar, IELTS/CEFR/SAT natijalari va top-1000 universitetlar bilan hamkorlik. Toshkent, Chilonzor." />
+    <meta name="theme-color" content="#FBF8F1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0A1328" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+      try { var th = localStorage.getItem('ss_theme'); if (th === 'dark') document.documentElement.dataset.theme = 'dark'; } catch (e) {}
+      // Home: fetch the hero data in parallel with the JS bundle and preload the LCP image early.
+      (function () {
+        try {
+          if (location.pathname !== '/') return;
+          var lang = new URLSearchParams(location.search).get('lang');
+          if (!lang) { try { lang = localStorage.getItem('ss_lang'); } catch (e) {} }
+          if (lang !== 'ru' && lang !== 'en') lang = 'uz';
+          var url = '/api/v1/public/pages/home?lang=' + lang;
+          var p = fetch(url, { credentials: 'include', headers: { Accept: 'application/json' } }).then(function (r) { if (!r.ok) throw r; return r.json(); });
+          window.__SS_PREFETCH = {}; window.__SS_PREFETCH[url] = p; window.__SS_DATA = {};
+          p.then(function (d) {
+            window.__SS_DATA[url] = d;
+            var h = d && d.blocks && d.blocks.hero;
+            var im = h && h.image;
+            if (!im || !im.medium) return;
+            shell(h, im, lang);
+            var l = document.createElement('link');
+            l.rel = 'preload'; l.as = 'image'; l.setAttribute('fetchpriority', 'high');
+            l.href = im.medium;
+            var set = [im.thumb && im.thumb + ' 400w', im.medium + ' 960w', im.large && im.large + ' 1920w'].filter(Boolean).join(', ');
+            l.setAttribute('imagesrcset', set); l.setAttribute('imagesizes', '(max-width: 1024px) 92vw, 560px');
+            document.head.appendChild(l);
+          }).catch(function () {});
+        } catch (e) {}
+        // Static first paint of header + hero (same markup/classes as React); React replaces it on mount.
+        function shell(h, im, lang) {
+          var esc = function (t) { return String(t || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+          var typo = function (t) { t = String(t || ''); return lang === 'uz' ? t.replace(/([oOgG])['`ʻ‘]/g, '$1\u2018').replace(/(\w)['`ʼ]/g, '$1\u2019') : t; };
+          var title = esc(typo(h.title)), acc = esc(typo(h.title_accent));
+          if (acc && title.toLowerCase().indexOf(acc.toLowerCase()) >= 0) { var i = title.toLowerCase().indexOf(acc.toLowerCase()); title = title.slice(0, i) + '<em>' + title.slice(i, i + acc.length) + '</em>' + title.slice(i + acc.length); }
+          var open = { uz: 'Qabul ochiq', ru: 'Набор открыт', en: 'Admission open' }[lang];
+          var sub = { uz: 'XUSUSIY MAKTAB', ru: 'ЧАСТНАЯ ШКОЛА', en: 'PRIVATE SCHOOL' }[lang];
+          var wide = matchMedia('(min-width: 1024px)').matches;
+          var set = [im.thumb && im.thumb + ' 400w', im.medium + ' 960w', im.large && im.large + ' 1920w'].filter(Boolean).join(', ');
+          var head = '<header class="site-header"><div class="container site-header__in"><a class="logo" href="/"><img src="/brand/logo-96.webp" srcset="/brand/logo-96.webp 1x, /brand/logo-192.webp 2x" width="46" height="46" alt=""><span><b>Smart Start</b><small>' + sub + '</small></span></a></div></header>';
+          var html = '<main class="site-main"><section class="hero"><div class="hero__glow"></div><div class="container hero__in"><div class="hero__text">' +
+            '<span class="pill-badge"><span class="pill-badge__dot">' + open + '</span>' + esc(typo(h.admission_open || h.badge)) + '</span>' +
+            '<h1 class="h1 hero__title">' + title + '</h1><p class="lead hero__lead">' + esc(typo(h.text)) + '</p>' +
+            '<div class="hero__btns"><a href="/qabul#ariza" class="btn btn--gold btn--lg"><i class="shell-ico"></i>' + esc(h.cta_primary) + '</a><a href="#ekskursiya" class="btn btn--ghost btn--lg"><i class="shell-ico"></i>' + esc(h.cta_secondary) + '</a></div>' +
+            (h.motto ? '<p class="hero__motto serif">' + esc(typo(h.motto)) + '</p>' : '') + (h.questions ? '<p class="hero__q">' + esc(typo(h.questions)) + ' <a href="#aloqa">&nbsp;</a></p>' : '') + '</div>' +
+            '<div class="hero__stage"><div class="hero__rig"><div class="hero__ring"></div><div class="hero__arch"' + (wide ? ' style="transform: rotateY(-14deg) rotateX(3deg)"' : '') + '><div class="hero__archclip"><div class="hero__archimg" style="transform: translateY(-4%)">' +
+            '<img src="' + esc(im.medium) + '" srcset="' + esc(set) + '" sizes="(max-width: 1024px) 92vw, 560px" alt="" fetchpriority="high" width="' + (im.width || 1600) + '" height="' + (im.height || 900) + '"></div></div></div></div></div></div></section></main>';
+          var put = function () {
+            var r = document.getElementById('root');
+            if (!r || r.querySelector('main')) return;
+            var hd = r.querySelector('.site-header');
+            if (r.firstChild && !hd) return; // React already mounted
+            if (hd) r.insertAdjacentHTML('beforeend', html); else r.innerHTML = head + html;
+            window.__SS_SHELL = true;
+          };
+          if (document.getElementById('root')) put(); else document.addEventListener('DOMContentLoaded', put);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // instant first paint: static header (same classes as React's); React replaces #root on mount
+      (function () {
+        if (/^\/admin(\/|$)/.test(location.pathname)) return;
+        var r = document.getElementById('root'); if (!r || r.firstChild) return;
+        var lang = new URLSearchParams(location.search).get('lang'); if (!lang) { try { lang = localStorage.getItem('ss_lang'); } catch (e) {} }
+        var sub = { ru: 'ЧАСТНАЯ ШКОЛА', en: 'PRIVATE SCHOOL' }[lang] || 'XUSUSIY MAKTAB';
+        r.innerHTML = '<header class="site-header"><div class="container site-header__in"><a class="logo" href="/"><img src="/brand/logo-96.webp" srcset="/brand/logo-96.webp 1x, /brand/logo-192.webp 2x" width="46" height="46" alt=""><span><b>Smart Start</b><small>' + sub + '</small></span></a></div></header>';
+      })();
+    </script>
+    <noscript>Smart Start xususiy maktabi — saytni ko‘rish uchun JavaScript yoqing. Tel: +998 90 994 74 07</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

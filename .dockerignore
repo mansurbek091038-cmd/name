@@ -1,0 +1,12 @@
+.venv
+.env
+data
+media
+backups
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+frontend/node_modules
+frontend/dist
+backend/app/static
+*.log
