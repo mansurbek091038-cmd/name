@@ -113,6 +113,7 @@ def create_app() -> FastAPI:
     from app.modules.auth import router as auth
     from app.modules.content import router_admin as content_admin
     from app.modules.content import router_public as content_public
+    from app.modules.courses import router as courses
     from app.modules.events import router as events
     from app.modules.media import router as media
     from app.modules.notifications import router as notifications
@@ -140,9 +141,9 @@ def create_app() -> FastAPI:
 
     for r in (
         auth.router, auth.users_router,
-        content_public.router, admissions.public_router, events.public_router,
+        content_public.router, admissions.public_router, courses.public_router, events.public_router,
         media.public_router, notifications.public_router,
-        admissions.admin_router,
+        admissions.admin_router, courses.admin_courses_router, courses.admin_enrollments_router,
         content_admin.posts_router, content_admin.teachers_router, content_admin.prices_router,
         content_admin.faqs_router, content_admin.testimonials_router, content_admin.partners_router,
         content_admin.extra_router, content_admin.certificates_router, content_admin.pages_router,

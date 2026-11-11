@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AnimatePresence, m } from 'motion/react';
-import { FileCheck2, GraduationCap, MapPin, Plus } from 'lucide-react';
+import { BookOpen, FileCheck2, GraduationCap, Plus } from 'lucide-react';
 import { accentLast, Em, typo, useI18n } from '@/lib/i18n';
 import { useQuery } from '@/lib/query';
 import { useSeo } from '@/lib/seo';
@@ -10,7 +10,7 @@ import { PageHero, SectionHead } from '@/components/Blocks';
 import { ErrorNotice, PageLoading, Skel } from '@/components/Feedback';
 import { Reveal, RevealItem } from '@/components/Motion';
 import { AdmissionForm } from '@/components/Forms';
-import { TourBooking } from '@/components/TourBooking';
+import { Courses } from '@/components/Courses';
 import '@/styles/pages.css';
 
 export default function Admission() {
@@ -25,7 +25,7 @@ export default function Admission() {
       <PageHero eyebrow={t.ctaEyebrow} title={accentLast(b.title, lang) ?? t.admTitle} lead={typo(b.text, lang) || t.admLead}>
         <div className="hero__btns">
           <a href="#ariza" className="btn btn--gold btn--lg"><GraduationCap aria-hidden="true" />{t.apply}</a>
-          <a href="#ekskursiya" className="btn btn--ghost btn--lg"><MapPin aria-hidden="true" />{t.tour}</a>
+          <a href="#kurslar" className="btn btn--ghost btn--lg"><BookOpen aria-hidden="true" />{t.courses}</a>
         </div>
       </PageHero>
 
@@ -74,10 +74,10 @@ export default function Admission() {
         </div>
       </section>
 
-      <section className="section section--tight" id="ekskursiya" aria-labelledby="tours-h">
+      <section className="section" id="kurslar" aria-labelledby="courses-h">
         <div className="container">
-          <SectionHead eyebrow={t.toursEyebrow} title={t.toursTitle} lead={t.toursLead} id="tours-h" />
-          <TourBooking />
+          <SectionHead eyebrow={t.coursesEyebrow} title={t.coursesTitle} lead={t.coursesLead} id="courses-h" />
+          <Courses />
         </div>
       </section>
     </>

@@ -246,14 +246,40 @@ def faq_admin(db: Session, f: Faq) -> dict:
             "order": f.order, "is_visible": f.is_visible}
 
 
-def testimonial_public(t: Testimonial, lang: str) -> dict:
-    return {"id": t.id, "author": t.author, "child_grade": t.child_grade, "text": pick(t, "text", lang)}
+def testimonial_public(t: Testimonial, lang: str = "uz", db: Session | None = None) -> dict:
+    photo = public_media(db, t.photo_id, lang) if (db and t.photo_id) else None
+    d = date_iso(t.date) if t.date else (t.created_at.strftime("%Y-%m-%d") if t.created_at else None)
+    return {
+        "id": t.id,
+        "author": t.author,
+        "child_name": t.child_name or "",
+        "child_grade": t.child_grade or "",
+        "photo": photo,
+        "date": d,
+        "text": pick(t, "text", lang),
+        "order": t.order,
+        "is_visible": t.is_visible,
+    }
 
 
 def testimonial_admin(db: Session, t: Testimonial) -> dict:
-    return {"id": t.id, "author": t.author, "child_grade": t.child_grade,
-            "text_uz": t.text_uz, "text_ru": t.text_ru, "text_en": t.text_en,
-            "order": t.order, "is_visible": t.is_visible}
+    photo = admin_media(db, t.photo_id) if t.photo_id else None
+    d = date_iso(t.date) if t.date else (t.created_at.strftime("%Y-%m-%d") if t.created_at else None)
+    return {
+        "id": t.id,
+        "author": t.author,
+        "child_name": t.child_name or "",
+        "child_grade": t.child_grade or "",
+        "photo_id": t.photo_id,
+        "photo": photo,
+        "date": d,
+        "text_uz": t.text_uz,
+        "text_ru": t.text_ru,
+        "text_en": t.text_en,
+        "order": t.order,
+        "is_visible": t.is_visible,
+        "created_at": to_local_iso(t.created_at),
+    }
 
 
 def partner_public(db: Session, p: Partner, lang: str) -> dict:

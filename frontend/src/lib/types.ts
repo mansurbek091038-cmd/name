@@ -51,7 +51,52 @@ export interface Post {
 export interface Teacher { id: number; full_name: string; subject?: string; experience_years?: number | null; bio?: string; photo?: ImageRef; badge?: string | null }
 export interface Price { id: number; grade_range: string; monthly_fee?: number | null; meals_fee?: number | null; transport_fee?: number | null; note?: string | null }
 export interface Faq { id: number; question: string; answer: string }
-export interface Testimonial { id: number; author: string; child_grade?: string | number | null; text: string }
+export interface Testimonial {
+  id: number;
+  author: string;
+  child_name?: string | null;
+  child_grade?: string | number | null;
+  photo?: ImageRef;
+  photo_id?: number | null;
+  date?: string | null;
+  text: string;
+  is_visible?: boolean;
+}
+
+export interface Course {
+  id: number;
+  title: string;
+  title_uz?: string;
+  title_ru?: string;
+  title_en?: string;
+  description: string;
+  description_uz?: string;
+  description_ru?: string;
+  description_en?: string;
+  image?: ImageRef;
+  image_id?: number | null;
+  duration: string;
+  price?: number | null;
+  price_text?: string;
+  order?: number;
+  is_active?: boolean;
+  created_at?: string;
+}
+
+export interface CourseEnrollment {
+  id: number;
+  course_id?: number | null;
+  course_title?: string;
+  course_name?: string;
+  name: string;
+  phone: string;
+  comment?: string;
+  is_handled?: boolean;
+  handled?: boolean;
+  status?: string;
+  ip?: string;
+  created_at: string;
+}
 
 export type CertType = 'IELTS' | 'CEFR' | 'SAT' | 'olimpiada' | 'boshqa' | string;
 export interface SubScores { listening?: string | number | null; reading?: string | number | null; writing?: string | number | null; speaking?: string | number | null; math?: string | number | null; ebrw?: string | number | null }
@@ -73,6 +118,7 @@ export interface Tour { id: number; date: string; time?: string; type: 'ekskursi
 
 export interface SiteSettings {
   site_name?: string; phone?: string; telegram?: string; instagram?: string; address?: string;
+  work_hours_weekday?: string; work_hours_saturday?: string; working_hours?: string;
   turnstile_site_key?: string | null; ga4_id?: string | null; ym_id?: string | null; meta_pixel_id?: string | null;
 }
 

@@ -36,6 +36,7 @@ from app.modules.content.models import (
     Testimonial,
 )
 from app.modules.content.service import score_value
+from app.modules.courses.models import Course
 from app.modules.events.models import Tour, TourBooking
 from app.modules.media.models import Album, Media
 from app.modules.media.pipeline import create_media, derive_public_copy
@@ -270,9 +271,53 @@ def seed_simple(db: Session) -> None:
     for i, (q, a) in enumerate(C.FAQS):
         db.add(Faq(question_uz=q[0], question_ru=q[1], question_en=q[2], answer_uz=a[0], answer_ru=a[1],
                    answer_en=a[2], order=i))
+    sample_names = ["Farzandi: Aziza (8-sinf)", "Farzandi: Jasur (5-sinf)", "Farzandi: Madina (11-sinf)"]
     for i, t in enumerate(C.TESTIMONIALS):
-        db.add(Testimonial(author=t["author"], child_grade=t["child_grade"], text_uz=t["text"][0],
-                           text_ru=t["text"][1], text_en=t["text"][2], order=i))
+        cname = sample_names[i] if i < len(sample_names) else ""
+        db.add(Testimonial(author=t["author"], child_name=cname, child_grade=t["child_grade"], text_uz=t["text"][0],
+                           text_ru=t["text"][1], text_en=t["text"][2], order=i, is_visible=True))
+
+
+def seed_courses(db: Session) -> None:
+    courses = [
+        ("Pre-IELTS va General English", "Pre-IELTS и General English", "Pre-IELTS & General English",
+         "Ingliz tili grammatikasi, so'z boyligi va erkin muloqot ko'nikmalarini oshirish. Barcha yoshdagi o'quvchilar uchun bosqichma-bosqich o'qitish dasturi.",
+         "Развитие грамматики, словарного запаса и разговорной речи. Поэтапная программа для всех уровней.",
+         "English grammar, vocabulary, and fluent speaking skills. Step-by-step program for students of all ages.",
+         "3 oy", 600000, "Oyiga 600 000 so'm", 0),
+        ("IELTS Intensive (7.0+ Kafolati)", "IELTS Intensive (Гарантия 7.0+)", "IELTS Intensive (7.0+ Guarantee)",
+         "Listening, Reading, Writing va Speaking bo'yicha chuqurlashtirilgan tayyorgarlik. Mock imtihonlar va xalqaro sertifikatga ega ustozlar ko'magi.",
+         "Интенсивная подготовка по всем секциям IELTS: Listening, Reading, Writing, Speaking. Пробные экзамены и опытные педагоги.",
+         "Comprehensive preparation across all IELTS sections with mock tests and expert certified mentors.",
+         "4 oy", 800000, "Oyiga 800 000 so'm", 1),
+        ("Pre-School — Maktabga tayyorlov", "Pre-School — Подготовка к школе", "Pre-School — School Readiness",
+         "5-6 yoshli bolalar uchun: savodxonlik, mantiqiy fikrlash, matematika va chet tili asoslari. Maktab muhitiga qulay moslashish.",
+         "Для детей 5–6 лет: грамота, логическое мышление, арифметика и основы иностранного языка. Плавная адаптация к школе.",
+         "For 5–6 year-olds: literacy, logical reasoning, mathematics, and early language foundations.",
+         "6 oy", 500000, "Oyiga 500 000 so'm", 2),
+        ("Mental Arifmetika va Mantiq", "Ментальная арифметика и логика", "Mental Arithmetic & Logic",
+         "Miyaning o'ng va chap yarim sharlarini rivojlantirish, tezkor hisoblash hamda xotirani kuchaytirish mashg'ulotlari.",
+         "Развитие обоих полушарий мозга, быстрый счёт в уме и укрепление памяти для детей школьного возраста.",
+         "Fast mental calculations, photographic memory training, and balanced cognitive development.",
+         "3 oy", 550000, "Oyiga 550 000 so'm", 3),
+        ("Olimpiada Matematikasi", "Олимпиадная математика", "Olympiad Mathematics",
+         "Murakkab masalalar yechish metodikasi, noan'anaviy yondashuv va tuman/viloyat/respublika fan olimpiadalariga maxsus tayyorgarlik.",
+         "Методы решения нестандартных задач, развитие гибкого мышления и подготовка к олимпиадам всех уровней.",
+         "Advanced problem solving, analytical thinking, and preparation for local and national competitions.",
+         "6 oy", 700000, "Oyiga 700 000 so'm", 4),
+        ("Robototexnika va IT Kids", "Робототехника и IT Kids", "Robotics & IT Kids",
+         "Dasturlash asoslari (Scratch, Python), elektronika va robotlar yasash orqali zamonaviy texnologik tafakkurni shakllantirish.",
+         "Основы программирования на Scratch и Python, конструирование роботов и развитие инженерного мышления.",
+         "Foundations of coding in Scratch and Python, electronics, and hands-on robotics engineering.",
+         "4 oy", 650000, "Oyiga 650 000 so'm", 5),
+    ]
+    for c in courses:
+        db.add(Course(
+            title_uz=c[0], title_ru=c[1], title_en=c[2],
+            description_uz=c[3], description_ru=c[4], description_en=c[5],
+            duration=c[6], price=c[7], price_text=c[8],
+            order=c[9], is_active=True
+        ))
 
 
 def _post(db: Session, p: dict, refs: dict[str, int], published: datetime, event_date: datetime | None) -> None:
@@ -322,10 +367,13 @@ def seed_certificates(db: Session) -> None:
 def seed_settings(db: Session) -> None:
     for k, v in {
         "site_name": "Smart Start",
-        "phone": "+998 90 994 74 07",
+        "phone": "+998 98 560 07 20",
         "telegram": "https://t.me/stmartstartt_bot",
         "instagram": "",
         "address": C.CONTACT["uz"]["address"],
+        "work_hours_weekday": "Du–Ju: 08:30–17:30",
+        "work_hours_saturday": "Sha: 08:30–12:00",
+        "working_hours": "Du–Ju: 08:30–17:30, Sha: 08:30–12:00",
     }.items():
         db.add(SiteSetting(key=k, value=v))
 
@@ -443,6 +491,7 @@ def run_seed(reset: bool = False) -> None:
         seed_simple(db)
         seed_certificates(db)
         seed_settings(db)
+        seed_courses(db)
         _, open_day = seed_tours(db, rng)
         seed_posts(db, refs, open_day)
         seed_admissions(db, users, rng)

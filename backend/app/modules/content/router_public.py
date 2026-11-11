@@ -87,7 +87,7 @@ def testimonials(lang: str = LangQ, db: Session = Depends(get_db)):
     lang = lang_or_default(lang)
     rows = db.scalars(select(Testimonial).where(Testimonial.is_visible.is_(True))
                       .order_by(Testimonial.order, Testimonial.id)).all()
-    return [svc.testimonial_public(t, lang) for t in rows]
+    return [svc.testimonial_public(t, lang, db=db) for t in rows]
 
 
 @router.get("/partners", summary="Hamkor universitetlar")

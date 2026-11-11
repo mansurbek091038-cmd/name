@@ -44,6 +44,9 @@ class SettingsIn(BaseModel):
     telegram: str | None = Field(None, max_length=200)
     instagram: str | None = Field(None, max_length=200)
     address: str | None = Field(None, max_length=300)
+    work_hours_weekday: str | None = Field(None, max_length=100)
+    work_hours_saturday: str | None = Field(None, max_length=100)
+    working_hours: str | None = Field(None, max_length=200)
 
 
 @admin_router.get("", summary="Sozlamalar (maxfiy qiymatlar yashirilgan)")

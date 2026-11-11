@@ -7,7 +7,7 @@ import { Loading, PageHead, Pagination } from './ui';
 
 interface Row { id: number; user: { id: number; full_name: string } | null; action: string; entity: string; entity_id: number | null; details: unknown; ip?: string; created_at: string }
 const ACTION: Record<string, string> = { create: 'Yaratdi', update: 'O‘zgartirdi', delete: 'O‘chirdi', login: 'Tizimga kirdi', login_failed: 'Kirish xatosi', note: 'Izoh qo‘shdi', export: 'Eksport', upload: 'Fayl yukladi', reorder: 'Tartibladi', change_password: 'Parolni o‘zgartirdi' };
-const ENTITY: Record<string, string> = { admission: 'Ariza', post: 'Yangilik', teacher: 'O‘qituvchi', certificate: 'Sertifikat', partner: 'Hamkor', price: 'Narx', faq: 'FAQ', testimonial: 'Fikr', album: 'Albom', media: 'Fayl', page: 'Sahifa', tour: 'Ekskursiya', booking: 'Yozilish', user: 'Foydalanuvchi', settings: 'Sozlamalar', contact_message: 'Xabar' };
+const ENTITY: Record<string, string> = { admission: 'Ariza', post: 'Yangilik', teacher: 'O‘qituvchi', certificate: 'Sertifikat', partner: 'Hamkor', price: 'Narx', faq: 'FAQ', testimonial: 'Fikr', album: 'Albom', media: 'Fayl', page: 'Sahifa', tour: 'Ekskursiya', booking: 'Yozilish', user: 'Foydalanuvchi', settings: 'Sozlamalar', contact_message: 'Xabar', course: 'Kurs', course_enrollment: 'Kursga ariza' };
 
 function summary(d: unknown): string {
   if (!d || typeof d !== 'object') return '';

@@ -116,12 +116,20 @@ class FaqIn(_Base):
 
 class TestimonialIn(_Base):
     author: str = Field(..., min_length=2, max_length=150)
+    child_name: str = Field("", max_length=150)
     child_grade: str = Field("", max_length=50)
+    photo_id: int | None = None
+    date: dt.date | None = None
     text_uz: str = Field(..., min_length=2, max_length=3000)
     text_ru: str = Field("", max_length=3000)
     text_en: str = Field("", max_length=3000)
     order: int = 0
     is_visible: bool = True
+
+    @model_validator(mode="before")
+    @classmethod
+    def _aliases(cls, data: Any) -> Any:
+        return _alias(data, "text")
 
     @field_validator("child_grade", mode="before")
     @classmethod

@@ -1,7 +1,7 @@
 import { lazy, Suspense, useRef } from 'react';
 import { Link } from 'react-router';
 import { m, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
-import { BadgeCheck, Globe2, GraduationCap, MapPin } from 'lucide-react';
+import { BadgeCheck, BookOpen, Globe2, GraduationCap } from 'lucide-react';
 import { accentLast, AccentTitle, typo, useI18n } from '@/lib/i18n';
 import { useMedia } from '@/lib/hooks';
 import { useQuery } from '@/lib/query';
@@ -83,7 +83,7 @@ function Hero({ b, loading }: { b: HomeBlocks; loading: boolean }) {
           <RevealItem as="p" className="lead hero__lead">{loading ? <><Skel h="1.1em" /><Skel h="1.1em" w="90%" style={{ marginTop: 6 }} /><Skel h="1.1em" w="70%" style={{ marginTop: 6 }} /></> : typo(h.text, lang)}</RevealItem>
           <RevealItem className="hero__btns">
             <Link to={to('/qabul') + '#ariza'} className="btn btn--gold btn--lg" onMouseEnter={() => warm('/qabul')}><GraduationCap aria-hidden="true" />{h.cta_primary || t.apply}</Link>
-            <a href="#ekskursiya" className="btn btn--ghost btn--lg"><MapPin aria-hidden="true" />{h.cta_secondary || t.tour}</a>
+            <a href="#kurslar" className="btn btn--ghost btn--lg"><BookOpen aria-hidden="true" />{t.courses}</a>
           </RevealItem>
           {h.motto && <RevealItem as="p" className="hero__motto serif">{typo(h.motto, lang)}</RevealItem>}
           {h.questions && <RevealItem as="p" className="hero__q">{typo(h.questions, lang)} {phone ? <a href={telHref(phone)}>{prettyPhone(phone)}</a> : <a href="#aloqa">&nbsp;</a>}</RevealItem>}

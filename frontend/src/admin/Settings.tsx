@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BarChart3, Building2, MessageSquareText, Save, Send, ShieldCheck } from 'lucide-react';
+import { BarChart3, Building2, Clock, MessageSquareText, Save, Send, ShieldCheck } from 'lucide-react';
 import { api } from '@/lib/api';
 import { invalidate, useQuery } from '@/lib/query';
 import { fmtDateTime } from '@/lib/format';
@@ -86,10 +86,17 @@ export default function Settings() {
         <Panel title={<><Building2 className="a-inline-ico" />Aloqa ma’lumotlari</>} className="a-span-2">
           <div className="a-form">
             {text('site_name', 'Sayt nomi')}
-            {text('phone', 'Telefon', { ph: '+998 90 994 74 07' })}
+            {text('phone', 'Telefon', { ph: '+998 98 560 07 20' })}
             {text('telegram', 'Telegram', { ph: 'https://t.me/…' })}
             {text('instagram', 'Instagram', { ph: 'https://instagram.com/…' })}
-            <div className="field"><label className="field__label" htmlFor="s-address">Manzil</label><input id="s-address" className="input input--sm" value={String(f.address ?? '')} onChange={(e) => setF({ ...f, address: e.target.value })} /></div>
+            <div className="field a-span-2"><label className="field__label" htmlFor="s-address">Manzil</label><input id="s-address" className="input input--sm" placeholder="120100, Sirdaryo viloyati, Guliston, Al-Xorazmiy ko‘chasi, 36" value={String(f.address ?? '')} onChange={(e) => setF({ ...f, address: e.target.value })} /></div>
+          </div>
+        </Panel>
+        <Panel title={<><Clock className="a-inline-ico" />Ish vaqti sozlamalari</>} className="a-span-2">
+          <div className="a-form">
+            {text('work_hours_weekday', 'Ish kunlari (Dushanba–Juma)', { ph: 'Du–Ju: 08:30–17:30' })}
+            {text('work_hours_saturday', 'Shanba kuni', { ph: 'Sha: 08:30–12:00' })}
+            <div className="field a-span-2">{text('working_hours', 'Umumiy ish vaqti matni (saytda ko‘rsatiladigan)', { ph: 'Du–Ju: 08:30–17:30, Sha: 08:30–12:00' })}</div>
           </div>
         </Panel>
         <Panel title="Bildirishnomalar jurnali" className="a-span-2">

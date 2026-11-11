@@ -34,14 +34,18 @@ SETTING_KEYS: dict[str, tuple[type, Any]] = {
     "ga4_id": (str, "env:ga4_id"),
     "ym_id": (str, "env:ym_id"),
     "meta_pixel_id": (str, "env:meta_pixel_id"),
-    "phone": (str, "+998 90 994 74 07"),
+    "phone": (str, "+998 98 560 07 20"),
     "telegram": (str, ""),
     "instagram": (str, ""),
-    "address": (str, ""),
+    "address": (str, "120100, Sirdaryo viloyati, Guliston, Al-Xorazmiy ko‘chasi, 36"),
+    "work_hours_weekday": (str, "Du–Ju: 08:30–17:30"),
+    "work_hours_saturday": (str, "Sha: 08:30–12:00"),
+    "working_hours": (str, "Du–Ju: 08:30–17:30, Sha: 08:30–12:00"),
 }
 SECRET_KEYS = ("telegram_bot_token", "eskiz_password", "turnstile_secret")
-PUBLIC_KEYS = ("site_name", "phone", "telegram", "instagram", "address", "turnstile_site_key",
-               "ga4_id", "ym_id", "meta_pixel_id")
+PUBLIC_KEYS = ("site_name", "phone", "telegram", "instagram", "address",
+               "work_hours_weekday", "work_hours_saturday", "working_hours",
+               "turnstile_site_key", "ga4_id", "ym_id", "meta_pixel_id")
 
 
 def _default(key: str) -> Any:
@@ -215,6 +219,29 @@ def notify_tour_booking(booking_id: int) -> None:
         _send_telegram_event("tour_booking", text, f"/admin/tours/{tid}")
     except Exception:
         log.exception("notify_tour_booking failed")
+
+
+def notify_course_enrollment(enrollment_id: int) -> None:
+    try:
+        from app.modules.courses.models import CourseEnrollment
+
+        with SessionLocal() as db:
+            enr = db.get(CourseEnrollment, enrollment_id)
+            if enr is None:
+                return
+            course_title = enr.course_title or (enr.course.title_uz if enr.course else "Kurs")
+            text = (
+                "📚 <b>YANGI KURSGA YOZILISH</b>\n"
+                "🏫 <b>Smart Start Xususiy Maktabi</b>\n\n"
+                f"🎯 <b>Kurs:</b> {e(course_title)}\n"
+                f"👤 <b>Foydalanuvchi:</b> {e(enr.name)}\n"
+                f"📞 <b>Telefon:</b> <code>{e(format_uz_phone(enr.phone))}</code>"
+            )
+            if enr.comment:
+                text += f"\n💬 <b>Izoh:</b> {e(enr.comment)}"
+        _send_telegram_event("course_enrollment", text, "/admin/kurslar")
+    except Exception:
+        log.exception("notify_course_enrollment failed")
 
 
 def notify_contact(message_id: int) -> None:

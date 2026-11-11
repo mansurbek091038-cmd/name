@@ -66,8 +66,8 @@ faqs_router = crud_router(
 
 testimonials_router = crud_router(
     prefix="/admin/testimonials", tag="admin: testimonials", model=Testimonial, entity="testimonial",
-    create_schema=TestimonialIn, to_admin=svc.testimonial_admin, search_fields=("author", "text_uz"),
-    prepare=svc.media_prepare(),
+    create_schema=TestimonialIn, to_admin=svc.testimonial_admin, search_fields=("author", "child_name", "text_uz"),
+    prepare=svc.media_prepare("photo_id"),
 )
 
 partners_router = crud_router(

@@ -6,7 +6,7 @@ import { ArrowRight, CalendarDays, Clock, MapPin, Phone, Quote, Send } from 'luc
 import { accentLast, typo, useI18n } from '@/lib/i18n';
 import { useInView } from '@/lib/hooks';
 import { useQuery } from '@/lib/query';
-import { fmtDate, prettyPhone, telHref } from '@/lib/format';
+import { fmtDate, img, prettyPhone, telHref } from '@/lib/format';
 import { gradeLabel } from '@/lib/format';
 import type { ContactBlocks, PageResponse, Paged, Post, SiteSettings, Teacher, Testimonial } from '@/lib/types';
 import { ErrorNotice, Skel } from './Feedback';
@@ -59,7 +59,7 @@ export function Testimonials({ title, lead }: { title?: string; lead?: string } 
   if (error) return <ErrorNotice error={error} onRetry={reload} />;
   if (!list.length) return null;
   return (
-    <section className="section section--tight" aria-labelledby="reviews-h">
+    <section className="section section--tight" id="fikrlar" aria-labelledby="reviews-h">
       <div className="container">
         <SectionHead eyebrow={t.reviewsEyebrow} title={title ?? t.reviewsTitle} lead={lead || undefined} id="reviews-h" />
         <Reveal className="reviews" gap={0.1}>
@@ -68,8 +68,22 @@ export function Testimonials({ title, lead }: { title?: string; lead?: string } 
               <Quote className="review__q" aria-hidden="true" />
               <p className="review__text serif">{typo(r.text, lang)}</p>
               <footer className="review__by">
-                <span className="review__av" aria-hidden="true">{r.author.split(/\s+/).map((s) => s[0]).slice(0, 2).join('')}</span>
-                <span><b>{r.author}</b>{r.child_grade ? <small>{/^\d+$/.test(String(r.child_grade)) ? gradeLabel(r.child_grade, t, lang) : r.child_grade}</small> : null}</span>
+                <span className="review__av" aria-hidden="true">
+                  {img(r.photo, 'thumb') ? (
+                    <img src={img(r.photo, 'thumb')} alt={r.author} />
+                  ) : (
+                    r.author.split(/\s+/).map((s) => s[0]).slice(0, 2).join('')
+                  )}
+                </span>
+                <div>
+                  <b>{r.author}</b>
+                  {r.child_name ? (
+                    <small>{lang === 'ru' ? `Ученик: ${r.child_name}` : lang === 'en' ? `Student: ${r.child_name}` : `Farzandi: ${r.child_name}`}</small>
+                  ) : r.child_grade ? (
+                    <small>{/^\d+$/.test(String(r.child_grade)) ? gradeLabel(r.child_grade, t, lang) : r.child_grade}</small>
+                  ) : null}
+                </div>
+                {r.date && <span className="review__date">{fmtDate(r.date, lang)}</span>}
               </footer>
             </RevealItem>
           ))}
@@ -129,6 +143,7 @@ export function useContact() {
   const settings = useQuery<SiteSettings>('/public/settings');
   const b = (page.data?.blocks ?? {}) as ContactBlocks & { title?: string; text?: string };
   const s = settings.data ?? {};
+  const hours = s.working_hours || (s.work_hours_weekday ? (s.work_hours_saturday ? `${s.work_hours_weekday}, ${s.work_hours_saturday}` : s.work_hours_weekday) : b.hours);
   return {
     title: accentLast(b.title, lang),
     text: typo(b.text, lang),
@@ -140,7 +155,7 @@ export function useContact() {
     phones: b.phones?.length ? b.phones : s.phone ? [s.phone] : [],
     telegram: b.telegram || s.telegram,
     instagram: b.instagram || s.instagram,
-    hours: b.hours,
+    hours,
     map: b.map_embed_url,
     lat: typeof b.lat === 'number' ? b.lat : undefined,
     lng: typeof b.lng === 'number' ? b.lng : undefined,

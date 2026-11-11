@@ -110,7 +110,10 @@ class Testimonial(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     author: Mapped[str] = mapped_column(String(150), default="")
+    child_name: Mapped[str] = mapped_column(String(150), default="")
     child_grade: Mapped[str] = mapped_column(String(50), default="")
+    photo_id: Mapped[int | None] = mapped_column(_media_fk(), nullable=True)
+    date: Mapped[dt.date | None] = mapped_column(Date, nullable=True)
     text_uz: Mapped[str] = mapped_column(Text, default="")
     text_ru: Mapped[str] = mapped_column(Text, default="")
     text_en: Mapped[str] = mapped_column(Text, default="")

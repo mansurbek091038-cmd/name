@@ -11,7 +11,7 @@ import { Counter, fadeUp, Reveal, RevealItem } from '@/components/Motion';
 import { ErrorNotice, Skel } from '@/components/Feedback';
 import { Img, SectionHead } from '@/components/Blocks';
 import { AdmissionForm } from '@/components/Forms';
-import { TourBooking } from '@/components/TourBooking';
+import { Courses } from '@/components/Courses';
 import { PartnersGlobe } from '@/components/PartnersGlobe';
 import { CertFan } from '@/components/cert/CertFan';
 import { CertModal } from '@/components/cert/CertModal';
@@ -41,10 +41,10 @@ export default function HomeRest({ b, T, L }: { b: HomeBlocks; T: (k: string, fb
       <Deferred minHeight={520}><NewsPreview title={T('news_title', t.newsTitle)} /></Deferred>
       <AdmissionCta cta={b.cta} />
       <Deferred minHeight={400}>
-        <section className="section section--tight" id="ekskursiya" aria-labelledby="tours-h">
+        <section className="section" id="kurslar" aria-labelledby="courses-h">
           <div className="container">
-            <SectionHead eyebrow={t.toursEyebrow} title={t.toursTitle} lead={t.toursLead} id="tours-h" />
-            <TourBooking />
+            <SectionHead eyebrow={t.coursesEyebrow} title={t.coursesTitle} lead={t.coursesLead} id="courses-h" />
+            <Courses />
           </div>
         </section>
       </Deferred>

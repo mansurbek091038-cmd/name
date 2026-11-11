@@ -29,6 +29,7 @@ export function Footer() {
   const { data: c } = useQuery<PageResponse<ContactBlocks>>('/public/pages/contact', { lang });
   const cb = c?.blocks;
   const phones = cb?.phones?.length ? cb.phones : s?.phone ? [s.phone] : [];
+  const hours = s?.working_hours || (s?.work_hours_weekday ? (s.work_hours_saturday ? `${s.work_hours_weekday}, ${s.work_hours_saturday}` : s.work_hours_weekday) : cb?.hours);
   const year = new Date().getFullYear();
 
   return (
@@ -59,7 +60,7 @@ export function Footer() {
             <ul className="footer-contacts">
               {(cb?.address || s?.address) && <li><MapPin aria-hidden="true" /><span>{cb?.address || s?.address}</span></li>}
               {phones.map((p) => <li key={p}><Phone aria-hidden="true" /><a href={telHref(p)}>{prettyPhone(p)}</a></li>)}
-              {cb?.hours && <li><Clock aria-hidden="true" /><span>{cb.hours}</span></li>}
+              {hours && <li><Clock aria-hidden="true" /><span>{hours}</span></li>}
             </ul>
           </div>
         </div>

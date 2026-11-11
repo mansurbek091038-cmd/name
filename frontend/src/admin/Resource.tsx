@@ -20,8 +20,9 @@ export const toLocalInput = (iso?: unknown) => {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
 };
 
-export default function ResourcePage() {
-  const { resource = '' } = useParams();
+export default function ResourcePage({ resource: propRes }: { resource?: string } = {}) {
+  const params = useParams();
+  const resource = propRes || params.resource || '';
   const def = RESOURCES[resource];
   if (!def) return <Empty>Noma’lum bo‘lim.</Empty>;
   return <ResourceList key={resource} def={def} />;

@@ -116,8 +116,9 @@ def test_public_content_localized(client):
     assert len(albums) == 2 and albums[0]["count"] >= 1
     assert client.get(f"/api/v1/public/albums/{albums[0]['id']}").json()["items"]
     s = client.get("/api/v1/public/settings").json()
-    assert set(s) == {"site_name", "phone", "telegram", "instagram", "address", "turnstile_site_key", "ga4_id",
-                      "ym_id", "meta_pixel_id"}
+    assert set(s) == {"site_name", "phone", "telegram", "instagram", "address",
+                      "work_hours_weekday", "work_hours_saturday", "working_hours",
+                      "turnstile_site_key", "ga4_id", "ym_id", "meta_pixel_id"}
 
 
 def test_post_html_sanitized_and_draft_hidden(admin, client):

@@ -54,10 +54,29 @@ class SchemaVersion(Base):
     note: Mapped[str] = mapped_column(String(200), default="")
 
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
+
+
+def _migrate_v2(conn) -> None:
+    """Migration v2:
+    - Add child_name, photo_id, date to testimonials table if missing.
+    """
+    from sqlalchemy import inspect, text
+
+    inspector = inspect(conn)
+    cols = {c["name"] for c in inspector.get_columns("testimonials")}
+    if "child_name" not in cols:
+        conn.execute(text("ALTER TABLE testimonials ADD COLUMN child_name VARCHAR(150) DEFAULT ''"))
+    if "photo_id" not in cols:
+        conn.execute(text("ALTER TABLE testimonials ADD COLUMN photo_id INTEGER REFERENCES media(id) ON DELETE SET NULL"))
+    if "date" not in cols:
+        conn.execute(text("ALTER TABLE testimonials ADD COLUMN date DATE NULL"))
+
 
 # Simple forward-only migrations: {target_version: callable(connection)}.
-MIGRATIONS: dict[int, callable] = {}
+MIGRATIONS: dict[int, callable] = {
+    2: _migrate_v2,
+}
 
 _settings = get_settings()
 _url = _settings.sqlalchemy_url

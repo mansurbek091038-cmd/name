@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState, type ReactNode } from 'react';
 import { Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { AnimatePresence, m } from 'motion/react';
 import {
-  Award, BookOpen, CalendarDays, ClipboardList, ExternalLink, FileText, Globe2, Images, Inbox, LayoutDashboard,
+  Award, BookOpen, ClipboardList, Clock, ExternalLink, FileText, Globe2, GraduationCap, Images, Inbox, LayoutDashboard,
   LogOut, Menu, MessageSquareQuote, Moon, ScrollText, Settings, Sun, Tag, UserCircle2, Users, UsersRound, HelpCircle, X,
 } from 'lucide-react';
 import '@/styles/admin.css';
@@ -24,6 +24,8 @@ const UsersPage = lazy(() => import('./Users'));
 const SettingsPage = lazy(() => import('./Settings'));
 const Audit = lazy(() => import('./Audit'));
 const Profile = lazy(() => import('./Profile'));
+const CoursesAdmin = lazy(() => import('./CoursesAdmin'));
+const WorkHours = lazy(() => import('./WorkHours'));
 
 interface NavItem { to: string; label: string; icon: ReactNode; role: Role; end?: boolean }
 export const NAV: { group: string; items: NavItem[] }[] = [
@@ -31,7 +33,8 @@ export const NAV: { group: string; items: NavItem[] }[] = [
     group: 'Asosiy', items: [
       { to: '/admin', label: 'Dashboard', icon: <LayoutDashboard />, role: 'admin', end: true },
       { to: '/admin/arizalar', label: 'Arizalar (CRM)', icon: <ClipboardList />, role: 'manager' },
-      { to: '/admin/ekskursiyalar', label: 'Ekskursiyalar', icon: <CalendarDays />, role: 'manager' },
+      { to: '/admin/kurslar', label: 'Kurslar', icon: <GraduationCap />, role: 'manager' },
+      { to: '/admin/fikrlar', label: 'Ota-onalar fikrlari', icon: <MessageSquareQuote />, role: 'manager' },
       { to: '/admin/xabarlar', label: 'Xabarlar', icon: <Inbox />, role: 'manager' },
     ],
   },
@@ -45,11 +48,11 @@ export const NAV: { group: string; items: NavItem[] }[] = [
       { to: '/admin/kontent/albums', label: 'Galereya', icon: <Images />, role: 'manager' },
       { to: '/admin/kontent/prices', label: 'Narxlar', icon: <Tag />, role: 'manager' },
       { to: '/admin/kontent/faqs', label: 'FAQ', icon: <HelpCircle />, role: 'manager' },
-      { to: '/admin/kontent/testimonials', label: 'Fikrlar', icon: <MessageSquareQuote />, role: 'manager' },
     ],
   },
   {
     group: 'Tizim', items: [
+      { to: '/admin/ish-vaqti', label: 'Ish vaqti', icon: <Clock />, role: 'admin' },
       { to: '/admin/foydalanuvchilar', label: 'Foydalanuvchilar', icon: <Users />, role: 'super_admin' },
       { to: '/admin/sozlamalar', label: 'Sozlamalar', icon: <Settings />, role: 'admin' },
       { to: '/admin/audit', label: 'Audit jurnali', icon: <ScrollText />, role: 'admin' },
@@ -157,6 +160,9 @@ function Shell() {
             <Routes>
               <Route index element={hasRole(user, 'admin') ? <Dashboard /> : <Navigate to="/admin/arizalar" replace />} />
               <Route path="arizalar" element={<Admissions />} />
+              <Route path="kurslar" element={<CoursesAdmin />} />
+              <Route path="fikrlar" element={<ResourcePage resource="testimonials" />} />
+              <Route path="ish-vaqti" element={<RoleRoute role="admin"><WorkHours /></RoleRoute>} />
               <Route path="ekskursiyalar" element={<Tours />} />
               <Route path="xabarlar" element={<Messages />} />
               <Route path="sahifalar" element={<PagesEditor />} />

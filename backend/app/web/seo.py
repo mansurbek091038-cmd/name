@@ -47,24 +47,24 @@ SITEMAP_ROUTES = ["/", "/natijalar", "/qabul", "/oqituvchilar", "/yangiliklar", 
 DEFAULTS = {
     "uz": {
         "site": "Smart Start Xususiy Maktabi",
-        "description": "Smart Start — Toshkentdagi xususiy maktab: zamonaviy ta'lim, kuchli ingliz tili, "
-                       "kichik sinflar va tajribali o'qituvchilar. 2027–2028 o'quv yiliga qabul ochiq.",
+        "description": "Smart Start — xususiy maktab: zamonaviy ta'lim, kuchli ingliz tili, "
+                       "kichik sinflar va tajribali o'qituvchilar. 2026–2027 o'quv yiliga qabul ochiq.",
         "/oqituvchilar": ("O'qituvchilar", "Farzandingizni kimlar o'qitadi: Smart Start tajribali o'qituvchilari."),
         "/yangiliklar": ("Yangiliklar", "Smart Start maktab hayoti: yangiliklar, tadbirlar va e'lonlar."),
         "/galereya": ("Galereya", "Smart Start maktabi suratlarda: bino, sinflar va darslar."),
     },
     "ru": {
         "site": "Частная школа Smart Start",
-        "description": "Smart Start — частная школа в Ташкенте: современное образование, сильный английский, "
-                       "небольшие классы и опытные педагоги. Открыт приём на 2027–2028 учебный год.",
+        "description": "Smart Start — частная школа: современное образование, сильный английский, "
+                       "небольшие классы и опытные педагоги. Открыт приём на 2026–2027 учебный год.",
         "/oqituvchilar": ("Учителя", "Кто учит вашего ребёнка: опытные педагоги школы Smart Start."),
         "/yangiliklar": ("Новости", "Жизнь школы Smart Start: новости, события и объявления."),
         "/galereya": ("Галерея", "Школа Smart Start в фотографиях: здание, классы и уроки."),
     },
     "en": {
         "site": "Smart Start Private School",
-        "description": "Smart Start is a private school in Tashkent: modern education, strong English, "
-                       "small classes and experienced teachers. Admissions open for 2027–2028.",
+        "description": "Smart Start is a private school: modern education, strong English, "
+                       "small classes and experienced teachers. Admissions open for 2026–2027.",
         "/oqituvchilar": ("Teachers", "Who teaches your child: the experienced faculty of Smart Start."),
         "/yangiliklar": ("News", "Smart Start school life: news, events and announcements."),
         "/galereya": ("Gallery", "Smart Start in pictures: the building, classrooms and lessons."),
@@ -115,8 +115,10 @@ def _url(path: str, lang: str) -> str:
 
 
 def _address(cfg: dict, contact: dict) -> dict:
-    return {"@type": "PostalAddress", "streetAddress": contact.get("address") or cfg.get("address") or "",
-            "addressLocality": "Toshkent", "addressRegion": "Toshkent", "addressCountry": "UZ"}
+    addr = contact.get("address") or cfg.get("address") or "120100, Sirdaryo viloyati, Guliston, Al-Xorazmiy ko‘chasi, 36"
+    return {"@type": "PostalAddress", "streetAddress": addr,
+            "postalCode": "120100",
+            "addressLocality": "Guliston", "addressRegion": "Sirdaryo viloyati", "addressCountry": "UZ"}
 
 
 def _school_ld(db: Session, lang: str) -> dict:

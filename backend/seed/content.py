@@ -10,7 +10,7 @@ HOME = {
         "logo": "@logo",
         "hero": {
             "badge": "Smart Start Xususiy Maktabi · 2022-yildan beri",
-            "admission_open": "2027–2028 o'quv yiliga qabul ochiq",
+            "admission_open": "2026–2027 o'quv yiliga qabul ochiq",
             "title": "Farzandingizning kelajagi bugun boshlanadi",
             "title_accent": "bugun",
             "text": "Smart Start — zamonaviy ta'lim, kuchli ingliz tili va har bir bolaga e'tibor beriladigan xususiy maktab. Kichik sinflar, tajribali o'qituvchilar va xavfsiz muhit.",
@@ -36,7 +36,7 @@ HOME = {
             {"icon": "award", "title": "Xalqaro sertifikatlar", "text": "IELTS, CEFR, SAT va fan olimpiadalari natijalari — har bir o'quvchining haqiqiy sertifikati bilan."},
         ],
         "cta": {
-            "title": "2027–2028 o'quv yiliga qabul ochiq",
+            "title": "2026–2027 o'quv yiliga qabul ochiq",
             "text": "Joylar soni cheklangan — arizangizni hoziroq qoldiring, menejerimiz 1 ish kuni ichida qo'ng'iroq qiladi.",
             "button": "Ariza qoldirish",
         },
@@ -83,7 +83,7 @@ HOME = {
     "ru": {
         "hero": {
             "badge": "Частная школа Smart Start · С 2022 года",
-            "admission_open": "Открыт приём на 2027–2028 учебный год",
+            "admission_open": "Открыт приём на 2026–2027 учебный год",
             "title": "Будущее вашего ребёнка начинается сегодня",
             "title_accent": "сегодня",
             "text": "Smart Start — современное образование, углублённый английский язык и индивидуальное внимание к каждому ученику. Небольшие классы, опытные педагоги и безопасная среда.",
@@ -106,7 +106,7 @@ HOME = {
             {"title": "Международные сертификаты", "text": "Результаты IELTS, CEFR, SAT и олимпиад — с подлинными сертификатами учеников."},
         ],
         "cta": {
-            "title": "Открыт приём на 2027–2028 учебный год",
+            "title": "Открыт приём на 2026–2027 учебный год",
             "text": "Количество мест ограничено — оставьте заявку прямо сейчас, наш менеджер перезвонит в течение 1 рабочего дня.",
             "button": "Оставить заявку",
         },
@@ -150,7 +150,7 @@ HOME = {
     "en": {
         "hero": {
             "badge": "Smart Start Private School · Est. 2022",
-            "admission_open": "Admissions open for the 2027–2028 academic year",
+            "admission_open": "Admissions open for the 2026–2027 academic year",
             "title": "Your Child's Future Begins Today",
             "title_accent": "Today",
             "text": "Smart Start — modern education, intensive English, and individual attention for every child. Small class sizes, experienced faculty, and a secure environment.",
@@ -173,7 +173,7 @@ HOME = {
             {"title": "Recognized Certifications", "text": "IELTS, CEFR, SAT, and Olympiad achievements — each backed by the student's real certificate."},
         ],
         "cta": {
-            "title": "Admissions open for 2027–2028",
+            "title": "Admissions open for 2026–2027",
             "text": "Places are limited — leave your application now and our manager will call you within one business day.",
             "button": "Apply now",
         },
@@ -305,19 +305,19 @@ ADMISSION = {
     },
 }
 
-# Chilonzor, Bunyodkor shoh ko'chasi (approximate — confirm the exact pin in the admin panel)
-LAT, LNG = 41.2858, 69.2040
-MAP_EMBED = f"https://maps.google.com/maps?q={LAT},{LNG}&z=16&hl=uz&output=embed"
+# 120100, Sirdaryo viloyati, Guliston, Al-Xorazmiy ko‘chasi, 36
+LAT, LNG = 40.4900, 68.7830
+MAP_EMBED = "https://maps.google.com/maps?q=120100,+Sirdaryo+viloyati,+Guliston,+Al-Xorazmiy+ko'chasi,+36&z=16&hl=uz&output=embed"
 
 CONTACT = {
     "uz": {
         "title": "Biz bilan bog'laning",
         "text": "Savolingiz bormi? Qo'ng'iroq qiling, Telegram'da yozing yoki maktabga keling — sizni choy bilan kutib olamiz.",
-        "address": "Toshkent shahri, Chilonzor tumani, Bunyodkor shoh ko'chasi",
-        "phones": ["+998 90 994 74 07"],
+        "address": "120100, Sirdaryo viloyati, Guliston, Al-Xorazmiy ko‘chasi, 36",
+        "phones": ["+998 98 560 07 20"],
         "telegram": "https://t.me/stmartstartt_bot",
         "instagram": "",
-        "hours": "Du–Ju 08:00–18:00, Sh 09:00–14:00",
+        "hours": "Du–Ju: 08:30–17:30, Sha: 08:30–12:00",
         "map_embed_url": MAP_EMBED,
         "lat": LAT,
         "lng": LNG,
@@ -325,14 +325,22 @@ CONTACT = {
     "ru": {
         "title": "Свяжитесь с нами",
         "text": "Есть вопросы? Позвоните, напишите в Telegram или приходите в школу — встретим вас с чаем.",
-        "address": "г. Ташкент, Чиланзарский район, проспект Бунёдкор",
-        "hours": "Пн–Пт 08:00–18:00, Сб 09:00–14:00",
+        "address": "120100, Сырдарьинская область, Гулистан, улица Аль-Хорезми, 36",
+        "phones": ["+998 98 560 07 20"],
+        "hours": "Пн–Пт: 08:30–17:30, Сб: 08:30–12:00",
+        "map_embed_url": MAP_EMBED,
+        "lat": LAT,
+        "lng": LNG,
     },
     "en": {
         "title": "Contact Us",
         "text": "Have a question? Call us, message us on Telegram or visit the school — we'll welcome you with a cup of tea.",
-        "address": "Bunyodkor Avenue, Chilanzar district, Tashkent",
-        "hours": "Mon–Fri 08:00–18:00, Sat 09:00–14:00",
+        "address": "120100, Syrdarya region, Gulistan, Al-Khwarizmi street, 36",
+        "phones": ["+998 98 560 07 20"],
+        "hours": "Mon–Fri: 08:30–17:30, Sat: 08:30–12:00",
+        "map_embed_url": MAP_EMBED,
+        "lat": LAT,
+        "lng": LNG,
     },
 }
 
@@ -393,7 +401,7 @@ PRIVACY = {
         "Uchinchi shaxslarga sotilmaydi va berilmaydi.</p>"
         "<h3>O'quvchilar sertifikatlari</h3><p>Saytda faqat ota-onasi yozma rozilik bergan o'quvchilarning sertifikatlari "
         "e'lon qilinadi; hujjat raqamlari va pasport ma'lumotlari yashiriladi.</p>"
-        "<h3>Huquqlaringiz</h3><p>Ma'lumotlaringizni ko'rish, tuzatish yoki o'chirishni so'rash uchun +998 90 994 74 07 "
+        "<h3>Huquqlaringiz</h3><p>Ma'lumotlaringizni ko'rish, tuzatish yoki o'chirishni so'rash uchun +998 98 560 07 20 "
         "raqamiga qo'ng'iroq qiling.</p>")},
     "ru": {"title": "Политика конфиденциальности", "updated": "2026-11-07", "body": (
         "<p>Частная школа Smart Start («Школа») обрабатывает персональные данные, отправленные через сайт, в соответствии "
@@ -405,7 +413,7 @@ PRIVACY = {
         "Мы не продаём и не передаём их третьим лицам.</p>"
         "<h3>Сертификаты учеников</h3><p>На сайте публикуются только сертификаты учеников с письменного согласия родителей; "
         "номера документов и паспортные данные скрываются.</p>"
-        "<h3>Ваши права</h3><p>Чтобы просмотреть, исправить или удалить свои данные, позвоните по номеру +998 90 994 74 07.</p>")},
+        "<h3>Ваши права</h3><p>Чтобы просмотреть, исправить или удалить свои данные, позвоните по номеру +998 98 560 07 20.</p>")},
     "en": {"title": "Privacy Policy", "updated": "2026-11-07", "body": (
         "<p>Smart Start Private School (the “School”) processes personal data submitted through this website in accordance "
         "with the Law of the Republic of Uzbekistan “On Personal Data”.</p>"
@@ -416,22 +424,22 @@ PRIVACY = {
         "We never sell or share it with third parties.</p>"
         "<h3>Student certificates</h3><p>Only certificates of students whose parents gave written consent are published; "
         "document numbers and passport details are hidden.</p>"
-        "<h3>Your rights</h3><p>To view, correct or delete your data, call +998 90 994 74 07.</p>")},
+        "<h3>Your rights</h3><p>To view, correct or delete your data, call +998 98 560 07 20.</p>")},
 }
 
 PAGES = {
-    "home": (HOME, {"uz": ("Smart Start — xususiy maktab, Toshkent", "Farzandingizning kelajagi bugun boshlanadi. Zamonaviy ta'lim, kuchli ingliz tili, kichik sinflar va tajribali o'qituvchilar. 2027–2028 o'quv yiliga qabul ochiq."),
-                    "ru": ("Smart Start — частная школа, Ташкент", "Будущее вашего ребёнка начинается сегодня. Современное образование, сильный английский, небольшие классы и опытные педагоги."),
-                    "en": ("Smart Start — Private School in Tashkent", "Your child's future begins today. Modern education, strong English, small classes and experienced teachers.")}, "@school_entrance"),
+    "home": (HOME, {"uz": ("Smart Start — xususiy maktab", "Farzandingizning kelajagi bugun boshlanadi. Zamonaviy ta'lim, kuchli ingliz tili, kichik sinflar va tajribali o'qituvchilar. 2026–2027 o'quv yiliga qabul ochiq."),
+                    "ru": ("Smart Start — частная школа", "Будущее вашего ребёнка начинается сегодня. Современное образование, сильный английский, небольшие классы и опытные педагоги. Открыт приём на 2026–2027 учебный год."),
+                    "en": ("Smart Start — Private School", "Your child's future begins today. Modern education, strong English, small classes and experienced teachers. Admissions open for 2026–2027.")}, "@school_entrance"),
     "about": (ABOUT, {"uz": ("Maktab haqida", "Smart Start 2022-yilda ochilgan: bolalarga yod olishni emas, fikrlashni o'rgatamiz."),
                       "ru": ("О школе", "Smart Start открылась в 2022 году: мы учим детей думать, а не зубрить."),
                       "en": ("About", "Smart Start opened in 2022: we teach children to think, not to memorize.")}, "@classroom"),
     "admission": (ADMISSION, {"uz": ("Qabul", "Qabul 4 qadamda: ariza, tanishuv, diagnostik suhbat va shartnoma. Kerakli hujjatlar va narxlar."),
                               "ru": ("Поступление", "Поступление в 4 шага: заявка, знакомство, диагностическая беседа и договор."),
                               "en": ("Admissions", "Admission in 4 steps: application, visit, diagnostic chat and contract.")}, "@school_entrance_family"),
-    "contact": (CONTACT, {"uz": ("Aloqa", "Smart Start: Toshkent, Chilonzor tumani. Telefon +998 90 994 74 07. Du–Ju 08:00–18:00, Sh 09:00–14:00."),
-                          "ru": ("Контакты", "Smart Start: Ташкент, Чиланзарский район. Телефон +998 90 994 74 07."),
-                          "en": ("Contact", "Smart Start: Chilanzar district, Tashkent. Phone +998 90 994 74 07.")}, None),
+    "contact": (CONTACT, {"uz": ("Aloqa", "Smart Start: Guliston, Al-Xorazmiy ko‘chasi, 36. Telefon +998 98 560 07 20. Du–Ju: 08:30–17:30, Sha: 08:30–12:00."),
+                          "ru": ("Контакты", "Smart Start: Гулистан, улица Аль-Хорезми, 36. Телефон +998 98 560 07 20. Пн–Пт: 08:30–17:30, Сб: 08:30–12:00."),
+                          "en": ("Contact", "Smart Start: Al-Khwarizmi street 36, Gulistan. Phone +998 98 560 07 20. Mon–Fri: 08:30–17:30, Sat: 08:30–12:00.")}, None),
     "privacy": (PRIVACY, {"uz": ("Maxfiylik siyosati", "Shaxsiy ma'lumotlarni qayta ishlash tartibi."),
                           "ru": ("Политика конфиденциальности", "Порядок обработки персональных данных."),
                           "en": ("Privacy Policy", "How we process personal data.")}, None),
@@ -569,16 +577,16 @@ POSTS = [
 
 # A DEMO upcoming open-day announcement (date is set by seed.py to the next open-day tour).
 UPCOMING_EVENT = {
-    "slug": "ochiq-eshiklar-kuni-qabul-2027", "type": "event", "cover": "@school_entrance",
-    "title": ("Ochiq eshiklar kuni: 2027–2028 o'quv yiliga qabul", "День открытых дверей: приём на 2027–2028 учебный год", "Open Day: Admissions for 2027–2028"),
+    "slug": "ochiq-eshiklar-kuni-qabul-2026", "type": "event", "cover": "@school_entrance",
+    "title": ("Ochiq eshiklar kuni: 2026–2027 o'quv yiliga qabul", "День открытых дверей: приём на 2026–2027 учебный год", "Open Day: Admissions for 2026–2027"),
     "excerpt": ("Maktab bo'ylab ekskursiya, ustozlar bilan suhbat va qabul shartlari haqida savol-javob.",
                 "Экскурсия по школе, беседа с учителями и ответы на вопросы о приёме.",
                 "School tour, meet the teachers and get answers about admission."),
-    "body": ("<p>2027–2028 o'quv yiliga qabul boshlandi. Ochiq eshiklar kunida maktab bilan tanishing, ustozlar bilan suhbatlashing va "
+    "body": ("<p>2026–2027 o'quv yiliga qabul boshlandi. Ochiq eshiklar kunida maktab bilan tanishing, ustozlar bilan suhbatlashing va "
              "qabul shartlari haqida savollaringizga javob oling.</p><p>Joylar cheklangan — saytda oldindan yoziling.</p>",
-             "<p>Начался приём на 2027–2028 учебный год. Приходите на день открытых дверей: познакомьтесь со школой и учителями, "
+             "<p>Начался приём на 2026–2027 учебный год. Приходите на день открытых дверей: познакомьтесь со школой и учителями, "
              "задайте вопросы о приёме.</p><p>Количество мест ограничено — запишитесь заранее на сайте.</p>",
-             "<p>Admissions for 2027–2028 are open. Visit our Open Day to see the school, meet the teachers and ask about admission.</p>"
+             "<p>Admissions for 2026–2027 are open. Visit our Open Day to see the school, meet the teachers and ask about admission.</p>"
              "<p>Places are limited — book in advance on the website.</p>"),
 }
 

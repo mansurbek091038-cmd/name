@@ -16,12 +16,13 @@ from app.modules.content.models import (  # noqa: F401
     Teacher,
     Testimonial,
 )
+from app.modules.courses.models import Course, CourseEnrollment  # noqa: F401
 from app.modules.events.models import Tour, TourBooking  # noqa: F401
 from app.modules.media.models import Album, Media  # noqa: F401
 from app.modules.notifications.models import NotificationLog, SiteSetting  # noqa: F401
 
 __all__ = [
     "SchemaVersion", "Admission", "AdmissionNote", "ContactMessage", "AuditLog", "RefreshToken", "User",
-    "Certificate", "Faq", "Page", "Partner", "Post", "Price", "Teacher", "Testimonial", "Tour", "TourBooking",
-    "Album", "Media", "NotificationLog", "SiteSetting",
+    "Certificate", "Course", "CourseEnrollment", "Faq", "Page", "Partner", "Post", "Price", "Teacher",
+    "Testimonial", "Tour", "TourBooking", "Album", "Media", "NotificationLog", "SiteSetting",
 ]
